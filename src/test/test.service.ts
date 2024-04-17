@@ -25,14 +25,18 @@ export class TestService {
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} test`;
+    return this.testRepository.findOneBy({id});
   }
 
-  update(id: number, updateTestDto: UpdateTestDto) {
-    return `This action updates a #${id} test`;
+  async update(id: number, updateTestDto: UpdateTestDto) {
+    const post: Test = await this.testRepository.findOneBy({id});
+    post.title = updateTestDto.title;
+    post.text = updateTestDto.text;
+    return this.testRepository.save(post);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} test`;
+  async remove(id: number) {
+    const post: Test = await this.testRepository.findOneBy({id})
+    return await this.testRepository.remove(post);
   }
 }
